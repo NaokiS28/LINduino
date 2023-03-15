@@ -1,7 +1,7 @@
 # LINduino
 A library for Arduinos to read from and write to a LIN bus using the MCP2003 transceiver IC or equivilant. This library supports both LIN 1.3 and LIN 2.0+, using classic or enhanced checksumming. This library is intended for getting started with LIN bus on Arduino platforms. It does not support extended frames natively, however these are software definable.
 
-#### LIN Bus brief
+### LIN Bus brief
 LIN bus supports up to 16 nodes officially, citing physical wire limits.
 
 LIN node devices can ignore a message, subscribe to a message or publish a response. 
@@ -15,7 +15,7 @@ LIN supports 64 message types:
 * 1 for user defined extentions (62).
 * 1 that is reserved (63).
 
-#### Data byte length
+### Data byte length
 
 The LIN 1.3 specification uses a data length code... *sometimes*.
 ```
@@ -31,7 +31,7 @@ This means a LIN 1.3 ID , if using DLC, would have use the following data byte l
 LIN 2.0 does not specify any DLC encoding and it just says that the data field may be 0 - 8 data bytes. This means you will need to know how many bytes to expect for each ID header.
 
 
-#### This library is still being worked on and there are a couple of known issues:
+### This library is still being worked on and there are a couple of known issues:
 * Reading might fail sometimes. Probably related to the ring buffer being used.
 * The library won't stop you using faster or slower baud, but you will break it if you go too fast.
 * Break pulses are ready a bit wacky atm. The AVR UART will read in `0x00` even when it's not supposed to (due to missing stop bits). This means that whilst it's easy to verify a break pulse, it also uses a quirk with the AVRs that might not be present in other MCUs. Future versions will just omit using this quirk.
@@ -39,7 +39,7 @@ LIN 2.0 does not specify any DLC encoding and it just says that the data field m
 * Sleep support is there, but not well made.
 * All official documentation uses the terms Master and Slave for devices. I replace these with Host device and Node device. It's not a protest, nor a grievance, it's just preference on my part.
 
-#### Some things to note when using the LIN bus:
+### Some things to note when using the LIN bus:
 * Data rate is between 1-20Kbps. Bear in mind that the atmega328 and probably atmega2560 have sucky baudrate generators and this might cause tolerance issues.
 * There is only a data length if you want it - You can use Data Length Codes (DLCs) to encode the length of the data but it is not always used and completely absent in LIN 2.0. The LIN specifications state "amount of data bytes for an ID will be agreed upon by both the host and node devices." IE you need to program both devices to use them.
 * There is no start of frame or escape characters, period, except the break pulse. Unlike JVS, this makes doing sanity checking very annoying and hard IMO. Make sure you know what ID was last sent and that you always use a fixed data length for that ID. About the best feature is that it has a checksum for the data portion.
